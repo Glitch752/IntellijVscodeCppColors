@@ -26,7 +26,7 @@ class VSCColorsSettingsState : SerializablePersistentStateComponent<VSCColorsSet
         }
 
     data class State (
-        @JvmField var keywordsWithColors: Map<String, KeywordGroup> = mutableMapOf() // keyword -> hex color
+        @JvmField var keywordsWithColors: Map<String, KeywordGroup> = mapOf() // keyword -> hex color
     )
 
     companion object {

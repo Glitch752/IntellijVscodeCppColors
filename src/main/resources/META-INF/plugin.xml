@@ -1,11 +1,11 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.glitch752.vsccolors</id>
-    <name>vsccolors</name>
+    <name>VSCode Colors</name>
     <vendor>Glitch752</vendor>
 
     <depends>com.intellij.modules.platform</depends>
-    
+
     <extensions defaultExtensionNs="com.intellij">
         <additionalTextAttributes
                 scheme="Default"
@@ -20,7 +20,7 @@
 
         <annotator language="C#" implementationClass="com.github.glitch752.vsccolors.annotator.CSAnnotator"
                    id="CSAnnotator"/>
-                   
+
         <!-- It seems like C++ can be both of these? -->
         <annotator language="C++" implementationClass="com.github.glitch752.vsccolors.annotator.CPPAnnotator"
                    id="CPPAnnotator"/>

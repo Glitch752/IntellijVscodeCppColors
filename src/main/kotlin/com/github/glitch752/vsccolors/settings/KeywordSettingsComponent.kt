@@ -91,31 +91,39 @@ class KeywordSettingsComponent {
 
         treeModel.addTreeModelListener(object : TreeModelListener {
             override fun treeNodesChanged(e: TreeModelEvent) {
+                // This is most likely a rename operation. This is called on the parent
+                // of the changed node.
+                // The easiest solution is just reconstructing the whole tree.
                 val node = e.treePath.lastPathComponent as DefaultMutableTreeNode
-                val childIndices = e.childIndices
 
-                if (childIndices != null && childIndices.isNotEmpty()) {
-                    val changedNode = node.getChildAt(childIndices[0]) as DefaultMutableTreeNode
-                    val userObj = changedNode.userObject.toString()
+                if(node == root) {
+                    // A category was renamed
+                    keywordGroups.clear()
+                    for (i in 0 until node.childCount) {
+                        val child = node.getChildAt(i) as DefaultMutableTreeNode
+                        val name = child.userObject as String
 
-                    // Node is a category (child of root)
-                    if (node === root) {
-                        val oldName = e.children[0].toString()
-                        if (oldName != userObj && !keywordGroups.containsKey(userObj)) {
-                            val group = keywordGroups.remove(oldName) ?: return
-                            keywordGroups[userObj] = group
-                        }
-                    }
-                    // Node is a keyword
-                    else {
-                        val groupName = node.userObject.toString()
-                        val oldKeyword = e.children[0].toString()
-                        if (oldKeyword != userObj) {
-                            keywordGroups[groupName]?.let {
-                                it.keywords = it.keywords - oldKeyword + userObj
+                        val keywords = emptySet<String>().toMutableSet()
+                        child.children().asIterator().forEach { keywordNode ->
+                            if (keywordNode is DefaultMutableTreeNode) {
+                                keywords += keywordNode.userObject as String
                             }
                         }
+
+                        keywordGroups[name] = KeywordGroup(keywords)
                     }
+                } else {
+                    // A keyword was renamed
+                    val category = node.userObject as String
+
+                    val keywords = emptySet<String>().toMutableSet()
+                    node.children().asIterator().forEach { keywordNode ->
+                        if (keywordNode is DefaultMutableTreeNode) {
+                            keywords += keywordNode.userObject as String
+                        }
+                    }
+
+                    keywordGroups[category]?.keywords = keywords
                 }
             }
 
@@ -165,26 +173,7 @@ class KeywordSettingsComponent {
         }
 
         val removeButton = JButton("Remove Selected").apply {
-            addActionListener {
-                val path = tree.selectionPath ?: return@addActionListener
-                val node = path.lastPathComponent as DefaultMutableTreeNode
-                val parent = node.parent as? DefaultMutableTreeNode ?: return@addActionListener
-
-                when {
-                    parent === root -> {
-                        val name = node.userObject as String
-                        keywordGroups.remove(name)
-                        treeModel.removeNodeFromParent(node)
-                    }
-                    else -> {
-                        val groupName = parent.userObject as String
-                        val keyword = node.userObject as String
-                        keywordGroups[groupName]?.keywords =
-                            keywordGroups[groupName]?.keywords?.minus(keyword) ?: emptySet()
-                        treeModel.removeNodeFromParent(node)
-                    }
-                }
-            }
+            addActionListener { removeSelectedNode() }
         }
 
         tree.componentPopupMenu = JPopupMenu().apply {
@@ -199,15 +188,9 @@ class KeywordSettingsComponent {
 
             // Add remove item
             val removeItem = JMenuItem("Remove").apply {
-                addActionListener {
-                    removeSelectedNode()
-                }
+                addActionListener { removeSelectedNode() }
             }
             add(removeItem)
-        }
-
-        tree.addTreeSelectionListener {
-            val groupName = getSelectedGroupName()
         }
 
         val infoIcon = JLabel("ⓘ");
@@ -308,6 +291,7 @@ class KeywordSettingsComponent {
     fun setData(data: Map<String, KeywordGroup>) {
         keywordGroups.clear()
         keywordGroups.putAll(data)
+
         root.removeAllChildren()
         data.forEach { (name, group) ->
             val groupNode = DefaultMutableTreeNode(name)
