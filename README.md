@@ -32,5 +32,5 @@ contribute if you want to fix something or add a feature.
 
 This plugin is derived from [brackets](https://github.com/j-d-ha/brackets), which in itself is based on
 the [intellij-rainbow-brackets](https://github.com/izhangzhihao/intellij-rainbow-brackets) JetBrains
-plugin and [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
-it is licensed under GPL 3, so the same license is used here.
+plugin and [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template).
+It is licensed under GPL 3, so the same license is used here.
