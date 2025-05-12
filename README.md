@@ -9,8 +9,10 @@ future.
 <!-- Plugin description end -->
 
 ## Installation
-Currently, I'm not publishing builds since this plugin is a work in progress. You can
-build the plugin from source using the following steps:
+You can install the plugin from the [latest release](https://github.com/Glitch752/IntellijVscodeCppColors/releases/latest) and install it manually using <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
+
+## Building
+You can build the plugin from source using the following steps:
 
 Clone the repository:
 ```bash
@@ -32,5 +34,5 @@ contribute if you want to fix something or add a feature.
 
 This plugin is derived from [brackets](https://github.com/j-d-ha/brackets), which in itself is based on
 the [intellij-rainbow-brackets](https://github.com/izhangzhihao/intellij-rainbow-brackets) JetBrains
-plugin and [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
-it is licensed under GPL 3, so the same license is used here.
+plugin and [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template).
+It is licensed under GPL 3, so the same license is used here.
