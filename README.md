@@ -9,8 +9,10 @@ future.
 <!-- Plugin description end -->
 
 ## Installation
-Currently, I'm not publishing builds since this plugin is a work in progress. You can
-build the plugin from source using the following steps:
+You can install the plugin from the [latest release](https://github.com/Glitch752/IntellijVscodeCppColors/releases/latest) and install it manually using <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
+
+## Building
+You can build the plugin from source using the following steps:
 
 Clone the repository:
 ```bash
