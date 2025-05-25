@@ -6,3 +6,4 @@ build
 /certs/
 /certs/
 **/.env
+bin/

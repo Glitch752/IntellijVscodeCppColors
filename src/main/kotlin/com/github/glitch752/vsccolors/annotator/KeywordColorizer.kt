@@ -14,17 +14,17 @@ class KeywordColorizer private constructor() {
     fun colorize(element: PsiElement, holder: AnnotationHolder) {
         val text = element.text
         val config = VSCColorsSettingsState.instance
-        if (text.isEmpty() || element !is LeafPsiElement) return
+        if(text.isEmpty() || element !is LeafPsiElement) return
 
-        val keywordsWithColors = config.keywordGroups
-        for ((groupName, keywords) in keywordsWithColors) {
-            if (keywords.keywords.contains(text)) {
-                val colorKey = TextAttributesKey.createTextAttributesKey("KEYWORD_HIGHLIGHT_$groupName")
-                holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
-                    .range(element as PsiElement)
-                    .textAttributes(colorKey)
-                    .create()
-            }
+        val keywordColorMap = config.keywordColorMap
+        val groupName = keywordColorMap[text]
+        if(groupName != null) {
+            val colorKey = TextAttributesKey.createTextAttributesKey("KEYWORD_HIGHLIGHT_$groupName")
+            holder.newAnnotation(HighlightSeverity.TEXT_ATTRIBUTES, "")
+                .range(element as PsiElement)
+                .textAttributes(colorKey)
+                .create()
+            return
         }
     }
 }
